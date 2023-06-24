@@ -1,4 +1,4 @@
-// обработчик инпута
+// Обновление полей базы знаний
 export const handleChange = (
   e,
   baseOfKnowledge,
@@ -56,4 +56,17 @@ export const handleChange = (
 
     return handler(copyBaseOfKnowledge);
   }
+};
+
+// Удаление базы знаний
+export const removeBaseOfKnowledge = (e, baseOfKnowledge, itemID, handler) => {
+  const baseOfKnowledgeToJSON = JSON.stringify(baseOfKnowledge);
+  const copybaseOfKnowledge = JSON.parse(baseOfKnowledgeToJSON);
+  const index = copybaseOfKnowledge.findIndex(
+    (element) => element.id === itemID
+  );
+
+  copybaseOfKnowledge.splice(index, 1);
+
+  return handler(copybaseOfKnowledge);
 };

@@ -1,10 +1,10 @@
 import './App.css';
 import { useState } from 'react';
-import { handleChange } from './handlers/handlers.js';
+import { handleChange, removeBaseOfKnowledge } from './handlers/handlers.js';
 
 function App() {
   // тут храним базу знаний с сервера
-  const [data, setData] = useState();
+  const [data, setData] = useState(0);
   // тянем файл с БЗ с сервера
   const getBaseOfKnowledge = () => {
     fetch('http://localhost:8080/')
@@ -17,27 +17,47 @@ function App() {
   };
 
   // обноваление инпутов
-  const changeHandler = (UpdatedBaSeOfKnowledge) => {
-    setData(UpdatedBaSeOfKnowledge);
+  const changeHandler = (updatedBaSeOfKnowledge) => {
+    setData(updatedBaSeOfKnowledge);
   };
+
+  const removeBaseOfKnowledgeHandler = (updatedBaSeOfKnowledge) => {
+    setData(updatedBaSeOfKnowledge);
+  };
+
   return (
     <div className="App p-6">
+      <button onClick={getBaseOfKnowledge}>get data</button>
       <h1 className="text-center text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
         Редактор знаний
       </h1>
-      <div className="mb-6">
-        <p className="text mb-4">Диагоностика автомобиля</p>
-        <button
-          onClick={getBaseOfKnowledge}
-          className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Редактировать
-        </button>
-        <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-          Удалить
-        </button>
-      </div>
-      <div>
+      {!data.length && <h2>Нет данных</h2>}
+      {data.length &&
+        data.map((item) => (
+          <div key={item.id} className="mb-6">
+            <p className="text mb-4">{item.title}</p>
+            <button
+              onClick={getBaseOfKnowledge}
+              className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Редактировать
+            </button>
+            <button
+              onClick={(e) => {
+                removeBaseOfKnowledge(
+                  e,
+                  data,
+                  item.id,
+                  removeBaseOfKnowledgeHandler
+                );
+              }}
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Удалить
+            </button>
+          </div>
+        ))}
+      {/* <div>
         {data &&
           Object.keys(data).map((key, dataIndex) => {
             if (key === 'title') {
@@ -233,7 +253,7 @@ function App() {
               );
             }
           })}
-      </div>
+      </div> */}
     </div>
   );
 }
