@@ -1,33 +1,50 @@
 import './App.css';
-import { useState } from 'react';
-import { handleChange, removeBaseOfKnowledge } from './handlers/handlers.js';
+import { useState, useEffect } from 'react';
+import {
+  getBaseOfKnowledge,
+  removeBaseOfKnowledge,
+  addBaseOfKnowledge,
+} from './api/api';
+import { handleChange } from './handlers/handlers.js';
 
 function App() {
-  // тут храним базу знаний с сервера
+  // тут храним всю базу знаний с сервера
   const [data, setData] = useState(0);
-  // тянем файл с БЗ с сервера
-  const getBaseOfKnowledge = () => {
-    fetch('http://localhost:8080/')
-      .then((res) => {
-        return res.json();
-      })
-      .then((res) => {
-        setData(res);
-      });
-  };
 
-  // обноваление инпутов
+  // тут храним файл с новой
+  // базой знаий
+  const [file, setFile] = useState();
+
+  // тянем файл с БЗ с сервера
+  useEffect(() => {
+    getBaseOfKnowledge(setData);
+  }, []);
+
+  // обновение базы знаний
   const changeHandler = (updatedBaSeOfKnowledge) => {
     setData(updatedBaSeOfKnowledge);
   };
 
+  // удаление определенной базы знаний
   const removeBaseOfKnowledgeHandler = (updatedBaSeOfKnowledge) => {
+    setData(updatedBaSeOfKnowledge);
+  };
+
+  // обработчик добавления
+  // нового файла
+  const fileChangeHandler = (e) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  // добавление новой базы знаний
+  const addBaseOfKnowledgeHandler = (updatedBaSeOfKnowledge) => {
     setData(updatedBaSeOfKnowledge);
   };
 
   return (
     <div className="App p-6">
-      <button onClick={getBaseOfKnowledge}>get data</button>
       <h1 className="text-center text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
         Редактор знаний
       </h1>
@@ -36,20 +53,12 @@ function App() {
         data.map((item) => (
           <div key={item.id} className="mb-6">
             <p className="text mb-4">{item.title}</p>
-            <button
-              onClick={getBaseOfKnowledge}
-              className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
+            <button className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               Редактировать
             </button>
             <button
               onClick={(e) => {
-                removeBaseOfKnowledge(
-                  e,
-                  data,
-                  item.id,
-                  removeBaseOfKnowledgeHandler
-                );
+                removeBaseOfKnowledge(item.id, removeBaseOfKnowledgeHandler);
               }}
               className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
             >
@@ -57,6 +66,25 @@ function App() {
             </button>
           </div>
         ))}
+      <label>
+        Выберите файл
+        <br />
+        <input
+          type="file"
+          onChange={(e) => {
+            fileChangeHandler(e);
+          }}
+        />
+      </label>
+
+      <button
+        onClick={(e) => {
+          addBaseOfKnowledge(file, addBaseOfKnowledgeHandler);
+        }}
+        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Добваить
+      </button>
       {/* <div>
         {data &&
           Object.keys(data).map((key, dataIndex) => {

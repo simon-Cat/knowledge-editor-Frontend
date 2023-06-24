@@ -59,14 +59,15 @@ export const handleChange = (
 };
 
 // Удаление базы знаний
-export const removeBaseOfKnowledge = (e, baseOfKnowledge, itemID, handler) => {
-  const baseOfKnowledgeToJSON = JSON.stringify(baseOfKnowledge);
-  const copybaseOfKnowledge = JSON.parse(baseOfKnowledgeToJSON);
-  const index = copybaseOfKnowledge.findIndex(
-    (element) => element.id === itemID
-  );
+// export const removeBaseOfKnowledge = (e, baseOfKnowledge, itemID, handler) => {
+//   const baseOfKnowledgeToJSON = JSON.stringify(baseOfKnowledge);
+//   const copybaseOfKnowledge = JSON.parse(baseOfKnowledgeToJSON);
+//   const index = copybaseOfKnowledge.findIndex(
+//     (element) => element.id === itemID
+//   );
 
-  copybaseOfKnowledge.splice(index, 1);
+//   copybaseOfKnowledge.splice(index, 1);
+//   removeBaseOfKnowledge(itemID).
 
-  return handler(copybaseOfKnowledge);
-};
+//   return handler(copybaseOfKnowledge);
+// };
