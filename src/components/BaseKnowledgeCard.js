@@ -1,90 +1,39 @@
-import './App.css';
-import Header from './components/Header';
-import ExpertSystem from './components/ExpertSystem';
-import KnowledgeEditor from './components/KnowledgeEditor';
-import BaseKnowledgeCard from './components/BaseKnowledgeCard';
+import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { getBaseOfKnowledge } from './api/api';
-import { Routes, Route } from 'react-router-dom';
-// import BaseOfKnowledgeItem from './components/baseOfKnowledgeItem';
+import { handleChange } from '../handlers/handlers';
+import { updateBaseOfKnowledge } from '../api/api';
 
-// import { handleChange } from './handlers/handlers.js';
+const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
+  const [d, setD] = useState({});
+  let { baseID } = useParams();
 
-function App() {
-  // тут храним всю базу знаний с сервера
-  const [data, setData] = useState();
-
-  // тут храним файл с новой
-  // базой знаий
-  const [file, setFile] = useState();
-
-  // тянем файл с БЗ с сервера
   useEffect(() => {
-    getBaseOfKnowledge(setData);
+    baseID = +baseID;
+    const currentBase = data.find((d) => d.id === baseID);
+    setD(currentBase);
   }, []);
 
-  // обновение базы знаний
-  const changeHandler = (updatedBaSeOfKnowledge) => {
-    setData(updatedBaSeOfKnowledge);
-  };
+  const updateBaseHandler = (upda) => {};
 
-  // удаление определенной базы знаний
-  const removeBaseOfKnowledgeHandler = (updatedBaSeOfKnowledge) => {
-    setData(updatedBaSeOfKnowledge);
-  };
-
-  // обработчик добавления
-  // нового файла
-  const fileChangeHandler = (e) => {
-    if (e.target.files) {
-      setFile(e.target.files[0]);
-    }
-  };
-
-  // добавление новой базы знаний
-  const addBaseOfKnowledgeHandler = (updatedBaSeOfKnowledge) => {
-    setData(updatedBaSeOfKnowledge);
-  };
-
+  // baseID = +baseID;
+  // console.log(data);
+  // const d = data.find((d) => d.id === baseID);
   return (
-    <div className="App p-6">
-      <Header />
-
-      <Routes>
-        <Route path="/expsys" element={<ExpertSystem />} />
-        <Route
-          exact
-          path="/editor"
-          element={
-            <KnowledgeEditor
-              data={data}
-              removeBaseHandler={removeBaseOfKnowledgeHandler}
-              fileChangeHandler={fileChangeHandler}
-              addBaseHandler={addBaseOfKnowledgeHandler}
-              newBaseFile={file}
-            />
-          }
-        />
-        <Route
-          path="/editor/:baseID"
-          element={
-            <BaseKnowledgeCard data={data} inputChangeHandler={changeHandler} />
-          }
-        />
-      </Routes>
-      {/* <div>
-        {data &&
-          Object.keys(data).map((key, dataIndex) => {
+    <div>
+      <div>
+        {!d && <h1>Нет данных</h1>}
+        {d &&
+          Object.keys(d).map((key, dIndex) => {
             if (key === 'title') {
               return (
-                <div>
+                <div key={key.id}>
                   <label htmlFor="title">Название базы знаний</label> -{' '}
                   <input
                     className="border-2 p-1 border-sky-600"
                     id="title"
-                    value={data[key]}
+                    value={d[key]}
                     onChange={(e) => {
-                      handleChange(e, data, changeHandler, 'title');
+                      handleChange(e, d, setD, 'title');
                     }}
                   />
                 </div>
@@ -92,36 +41,31 @@ function App() {
             }
             if (key === 'init_question') {
               return (
-                <div>
+                <div key={key.id}>
                   <label htmlFor="init_question">Стартовый вопорс:</label>
                   <br />
                   <input
                     className="ml-2 border-2 p-1 border-sky-600"
                     id="init_question"
                     type="text"
-                    value={data[key].text}
+                    value={d[key].text}
                     onChange={(e) => {
-                      handleChange(
-                        e,
-                        data,
-                        changeHandler,
-                        'init_question',
-                        'text'
-                      );
+                      handleChange(e, d, setD, 'init_question', 'text');
                     }}
                   />
                   <p className="ml-4">Варианты ответов:</p>
-                  {data[key].answers.map((initAnswer, InitAnswerIndex) => (
+                  {d[key].answers.map((initAnswer, InitAnswerIndex) => (
                     <>
                       <input
+                        key={key.id}
                         type="text"
                         className="ml-6 mb-2 border-2 p-1 border-sky-600"
                         value={initAnswer}
                         onChange={(e) => {
                           handleChange(
                             e,
-                            data,
-                            changeHandler,
+                            d,
+                            setD,
                             'init_question',
                             'answers',
                             InitAnswerIndex
@@ -145,17 +89,18 @@ function App() {
               return (
                 <div>
                   <p>Разделы</p>
-                  {data[key].map((section, sectionIndex) => (
+                  {d[key].map((section, sectionIndex) => (
                     <>
                       <input
+                        key={key.id}
                         className="ml-2 mb-2 border-2 p-1 border-sky-600"
                         type="text"
                         value={section.name}
                         onChange={(e) => {
                           handleChange(
                             e,
-                            data,
-                            changeHandler,
+                            d,
+                            setD,
                             'sections',
                             sectionIndex,
                             'name'
@@ -174,14 +119,15 @@ function App() {
                       {section.questions.map((question, questionIndex) => (
                         <>
                           <input
+                            key={key.id}
                             className="ml-6 mb-2 border-2 p-1 border-sky-600"
                             type="text"
                             value={question.text}
                             onChange={(e) => {
                               handleChange(
                                 e,
-                                data,
-                                changeHandler,
+                                d,
+                                setD,
                                 'sections',
                                 sectionIndex,
                                 'questions',
@@ -198,14 +144,15 @@ function App() {
                           {question.answers.map((answer, answerIndex) => (
                             <>
                               <input
+                                key={key.id}
                                 className="ml-10 mb-2 border-2 p-1 border-sky-600"
                                 type="text"
                                 value={answer}
                                 onChange={(e) => {
                                   handleChange(
                                     e,
-                                    data,
-                                    changeHandler,
+                                    d,
+                                    setD,
                                     'sections',
                                     sectionIndex,
                                     'questions',
@@ -236,14 +183,15 @@ function App() {
                       {section.solutions.map((solution, solutionIndex) => (
                         <>
                           <input
+                            key={key.id}
                             className="ml-6 mb-2 border-2 p-1 border-sky-600"
                             type="text"
                             value={solution.text}
                             onChange={(e) => {
                               handleChange(
                                 e,
-                                data,
-                                changeHandler,
+                                d,
+                                setD,
                                 'sections',
                                 sectionIndex,
                                 'solutions',
@@ -268,9 +216,17 @@ function App() {
               );
             }
           })}
-      </div> */}
+      </div>
+      <button
+        onClick={() => {
+          updateBaseOfKnowledge(d, inputChangeHandler);
+        }}
+        className="ml-6 mb-4 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
+      >
+        Сохранить
+      </button>
     </div>
   );
-}
+};
 
-export default App;
+export default BaseKnowledgeCard;

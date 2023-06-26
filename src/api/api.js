@@ -20,7 +20,9 @@ export const removeBaseOfKnowledge = (id, handler) => {
       return res.json();
     })
     .then((res) => {
-      handler(res);
+      handler((prev) => {
+        return res;
+      });
     });
 };
 
@@ -36,6 +38,20 @@ export const addBaseOfKnowledge = (file, handler) => {
       'content-type': file.type,
       'content-length': `${file.size}`,
     },
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      handler(res);
+    });
+};
+
+// обновление выбранной базы знаний
+export const updateBaseOfKnowledge = (updatedBase, handler) => {
+  fetch('http://localhost:3000/', {
+    method: 'PATCH',
+    body: JSON.stringify(updatedBase),
   })
     .then((res) => {
       return res.json();
