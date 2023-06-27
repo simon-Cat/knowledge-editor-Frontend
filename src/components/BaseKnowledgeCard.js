@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { handleChange } from '../handlers/handlers';
+import { handleChange, handleAddField } from '../handlers/handlers';
 import { updateBaseOfKnowledge } from '../api/api';
 
 const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
@@ -12,12 +12,6 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
     const currentBase = data.find((d) => d.id === baseID);
     setD(currentBase);
   }, []);
-
-  const updateBaseHandler = (upda) => {};
-
-  // baseID = +baseID;
-  // console.log(data);
-  // const d = data.find((d) => d.id === baseID);
   return (
     <div>
       <div>
@@ -78,7 +72,12 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
                       <br />
                     </>
                   ))}
-                  <button className="ml-6 mb-4 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded">
+                  <button
+                    onClick={(e) => {
+                      handleAddField(d, setD, 'init_question', 'answers');
+                    }}
+                    className="ml-6 mb-4 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
+                  >
                     Добавить ответ
                   </button>
                   <br />
@@ -90,7 +89,8 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
                 <div>
                   <p>Разделы</p>
                   {d[key].map((section, sectionIndex) => (
-                    <>
+                    <div className="mb-4 p-2 border-2">
+                      <p>Наименование раздела</p>
                       <input
                         key={key.id}
                         className="ml-2 mb-2 border-2 p-1 border-sky-600"
@@ -111,13 +111,10 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
                         Удалить
                       </button>
                       <br />
-                      <button className="ml-2 mb-2 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded">
-                        Добавить раздел
-                      </button>
-                      <br />
                       <p className="ml-4">Вопросы раздела:</p>
                       {section.questions.map((question, questionIndex) => (
-                        <>
+                        <div>
+                          <p className="ml-6">Наименование вопроса</p>
                           <input
                             key={key.id}
                             className="ml-6 mb-2 border-2 p-1 border-sky-600"
@@ -168,16 +165,40 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
                               <br />
                             </>
                           ))}
-                          <button className="ml-10 mb-4 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded">
+                          <button
+                            onClick={(e) => {
+                              handleAddField(
+                                d,
+                                setD,
+                                'sections',
+                                'questions',
+                                'answers',
+                                sectionIndex,
+                                questionIndex
+                              );
+                            }}
+                            className="ml-10 mb-4 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
+                          >
                             Добавить ответ
                           </button>
                           <br />
-                        </>
+                        </div>
                       ))}
-
-                      <button className="ml-6 mb-2 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded">
+                      <button
+                        onClick={(e) => {
+                          handleAddField(
+                            d,
+                            setD,
+                            'sections',
+                            'questions',
+                            sectionIndex
+                          );
+                        }}
+                        className="ml-6 mb-2 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
+                      >
                         Добавить вопрос
                       </button>
+
                       <br />
                       <p className="ml-4">Варианты решений:</p>
                       {section.solutions.map((solution, solutionIndex) => (
@@ -206,12 +227,31 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
                           <br />
                         </>
                       ))}
-                      <button className="ml-6 mb-4 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded">
+                      <button
+                        onClick={(e) => {
+                          handleAddField(
+                            d,
+                            setD,
+                            'sections',
+                            'solutions',
+                            sectionIndex
+                          );
+                        }}
+                        className="ml-6 mb-4 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
+                      >
                         Добавить решение
                       </button>
                       <br />
-                    </>
+                    </div>
                   ))}
+                  <button
+                    onClick={(e) => {
+                      handleAddField(d, setD, 'sections');
+                    }}
+                    className="ml-2 mb-2 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
+                  >
+                    Добавить раздел
+                  </button>
                 </div>
               );
             }

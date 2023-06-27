@@ -47,7 +47,8 @@ export const addBaseOfKnowledge = (file, handler) => {
     });
 };
 
-// обновление выбранной базы знаний
+// обновление определенного
+// элемента базы знаний
 export const updateBaseOfKnowledge = (updatedBase, handler) => {
   fetch('http://localhost:3000/', {
     method: 'PATCH',
