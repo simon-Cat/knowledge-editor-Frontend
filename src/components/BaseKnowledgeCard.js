@@ -1,6 +1,10 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { handleChange, handleAddField } from '../handlers/handlers';
+import {
+  handleChange,
+  handleAddField,
+  handleRemoveField,
+} from '../handlers/handlers';
 import { updateBaseOfKnowledge } from '../api/api';
 
 const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
@@ -66,7 +70,18 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
                           );
                         }}
                       />
-                      <button className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+                      <button
+                        onClick={(e) => {
+                          handleRemoveField(
+                            d,
+                            setD,
+                            'init_question',
+                            'answers',
+                            InitAnswerIndex
+                          );
+                        }}
+                        className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                      >
                         Удалить
                       </button>
                       <br />
@@ -107,7 +122,12 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
                           );
                         }}
                       />
-                      <button className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+                      <button
+                        onClick={(e) => {
+                          handleRemoveField(d, setD, 'sections', sectionIndex);
+                        }}
+                        className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                      >
                         Удалить
                       </button>
                       <br />
@@ -133,7 +153,19 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
                               );
                             }}
                           />
-                          <button className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+                          <button
+                            onClick={(e) => {
+                              handleRemoveField(
+                                d,
+                                setD,
+                                'sections',
+                                'questions',
+                                sectionIndex,
+                                questionIndex
+                              );
+                            }}
+                            className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                          >
                             Удалить
                           </button>
                           <br />
@@ -159,7 +191,21 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
                                   );
                                 }}
                               />
-                              <button className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+                              <button
+                                onClick={(e) => {
+                                  handleRemoveField(
+                                    d,
+                                    setD,
+                                    'sections',
+                                    'questions',
+                                    'answers',
+                                    sectionIndex,
+                                    questionIndex,
+                                    answerIndex
+                                  );
+                                }}
+                                className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                              >
                                 Удалить
                               </button>
                               <br />
@@ -221,7 +267,19 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
                               );
                             }}
                           />
-                          <button className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+                          <button
+                            onClick={(e) => {
+                              handleRemoveField(
+                                d,
+                                setD,
+                                'sections',
+                                'solutions',
+                                sectionIndex,
+                                solutionIndex
+                              );
+                            }}
+                            className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                          >
                             Удалить
                           </button>
                           <br />

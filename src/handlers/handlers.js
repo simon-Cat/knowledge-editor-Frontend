@@ -60,7 +60,57 @@ export const handleChange = (
 
 // удаление поля из определенного
 // элемента базы знаний
-export const handleRemoveField = () => {};
+export const handleRemoveField = (
+  data,
+  handler,
+  prop1,
+  prop2,
+  prop3,
+  prop4,
+  prop5,
+  prop6
+) => {
+  // создаем копию
+  // определенного элемента
+  // базы знаний
+  const dataToJSON = JSON.stringify(data);
+  const copyData = JSON.parse(dataToJSON);
+
+  if (prop1 === 'init_question' && prop2 === 'answers') {
+    // удаление выбранного ответа
+    // на инициализирующий вопрос
+    copyData[prop1][prop2].splice(prop3, 1);
+    handler((data) => copyData);
+    return;
+  } else if (prop1 === 'sections' && !prop2) {
+    // удаление выбранного раздела
+    copyData[prop1].splice([prop2], 1);
+    handler((data) => copyData);
+    return;
+  } else if (
+    prop1 === 'sections' &&
+    prop2 === 'questions' &&
+    prop3 !== 'answers'
+  ) {
+    // удаление выбарнного вопроса
+    copyData[prop1][prop3][prop2].splice(prop4, 1);
+    handler((data) => copyData);
+    return;
+  } else if (
+    prop1 === 'sections' &&
+    prop2 === 'questions' &&
+    prop3 === 'answers'
+  ) {
+    // удаление выбранного ответа
+    copyData[prop1][prop4][prop2][prop5][prop3].splice(prop6, 1);
+    handler((data) => copyData);
+    return;
+  } else if (prop1 === 'sections' && prop2 === 'solutions') {
+    copyData[prop1][prop3][prop2].splice(prop4, 1);
+    handler((data) => copyData);
+    return;
+  }
+};
 
 // добавление поля в определенный
 // элемент базы знаний
@@ -135,17 +185,3 @@ export const handleAddField = (
     return;
   }
 };
-
-// Удаление базы знаний
-// export const removecurrentBaseOfKnowledge = (e, currentBaseOfKnowledge, itemID, handler) => {
-//   const currentBaseOfKnowledgeToJSON = JSON.stringify(currentBaseOfKnowledge);
-//   const copycurrentBaseOfKnowledge = JSON.parse(currentBaseOfKnowledgeToJSON);
-//   const index = copycurrentBaseOfKnowledge.findIndex(
-//     (element) => element.id === itemID
-//   );
-
-//   copycurrentBaseOfKnowledge.splice(index, 1);
-//   removecurrentBaseOfKnowledge(itemID).
-
-//   return handler(copycurrentBaseOfKnowledge);
-// };
