@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
-    <div>
+    <div className="mb-8">
       <Link to="/expsys">
         <span className="p-2 mr-2 border-2 rounded">Экспертная система</span>
       </Link>

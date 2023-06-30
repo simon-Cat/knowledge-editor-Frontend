@@ -9,7 +9,7 @@ export const getBaseOfKnowledge = (handler) => {
     });
 };
 
-// удаляем определенную базу знаний
+// удаляем определенный элемент базы знаний
 export const removeBaseOfKnowledge = (id, handler) => {
   console.log(id);
   fetch('http://localhost:3000/', {

@@ -18,6 +18,9 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
   }, []);
   return (
     <div>
+      <h1 className="text-center text-4xl mb-4">
+        Редактирование элемента базы знаний
+      </h1>
       <div>
         {!d && <h1>Нет данных</h1>}
         {d &&
@@ -25,9 +28,10 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
             if (key === 'title') {
               return (
                 <div key={key.id}>
-                  <label htmlFor="title">Название базы знаний</label> -{' '}
+                  <label htmlFor="title">Название элемента базы знаний</label>
+                  <br />
                   <input
-                    className="border-2 p-1 border-sky-600"
+                    className="border-2 p-2 border-sky-600 rounded"
                     id="title"
                     value={d[key]}
                     onChange={(e) => {
@@ -40,10 +44,12 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
             if (key === 'init_question') {
               return (
                 <div key={key.id}>
-                  <label htmlFor="init_question">Стартовый вопорс:</label>
+                  <label className="ml-2" htmlFor="init_question">
+                    Инициализирующий вопорс:
+                  </label>
                   <br />
                   <input
-                    className="ml-2 border-2 p-1 border-sky-600"
+                    className="ml-2 border-2 p-2 rounded border-sky-600"
                     id="init_question"
                     type="text"
                     value={d[key].text}
@@ -57,7 +63,7 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
                       <input
                         key={key.id}
                         type="text"
-                        className="ml-6 mb-2 border-2 p-1 border-sky-600"
+                        className="ml-6 mb-2 border-2 p-2 rounded border-sky-600"
                         value={initAnswer}
                         onChange={(e) => {
                           handleChange(
@@ -104,11 +110,11 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
                 <div>
                   <p>Разделы</p>
                   {d[key].map((section, sectionIndex) => (
-                    <div className="mb-4 p-2 border-2">
+                    <div className="mb-4 p-2 border-2 rounded-md shadow w-1/2">
                       <p>Наименование раздела</p>
                       <input
                         key={key.id}
-                        className="ml-2 mb-2 border-2 p-1 border-sky-600"
+                        className="ml-2 mb-2 border-2 p-2 rounded border-sky-600"
                         type="text"
                         value={section.name}
                         onChange={(e) => {
@@ -137,7 +143,7 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
                           <p className="ml-6">Наименование вопроса</p>
                           <input
                             key={key.id}
-                            className="ml-6 mb-2 border-2 p-1 border-sky-600"
+                            className="ml-6 mb-2 border-2 p-2 rounded border-sky-600"
                             type="text"
                             value={question.text}
                             onChange={(e) => {
@@ -174,7 +180,7 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
                             <>
                               <input
                                 key={key.id}
-                                className="ml-10 mb-2 border-2 p-1 border-sky-600"
+                                className="ml-10 mb-2 border-2 p-2 rounded border-sky-600"
                                 type="text"
                                 value={answer}
                                 onChange={(e) => {
@@ -246,12 +252,12 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
                       </button>
 
                       <br />
-                      <p className="ml-4">Варианты решений:</p>
+                      <p className="ml-4">Варианты конечных решений:</p>
                       {section.solutions.map((solution, solutionIndex) => (
                         <>
                           <input
                             key={key.id}
-                            className="ml-6 mb-2 border-2 p-1 border-sky-600"
+                            className="ml-6 mb-2 border-2 p-2 rounded border-sky-600"
                             type="text"
                             value={solution.text}
                             onChange={(e) => {
@@ -319,7 +325,7 @@ const BaseKnowledgeCard = ({ data, inputChangeHandler }) => {
         onClick={() => {
           updateBaseOfKnowledge(d, inputChangeHandler);
         }}
-        className="ml-6 mb-4 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
+        className="mt-4 mb-4 bg-green-500 hover:bg-green-700 text-white font-bold p-3 rounded"
       >
         Сохранить
       </button>
